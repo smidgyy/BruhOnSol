@@ -30,9 +30,7 @@ export default function App() {
   const [copied, setCopied] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [bruhCount, setBruhCount] = useState(0);
-  const [videoPlaying, setVideoPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef(null);
   
   const { scrollYProgress } = useScroll();
@@ -44,22 +42,6 @@ export default function App() {
   useEffect(() => {
     audioRef.current = new Audio(BRUH_SOUND_URL);
     setBruhCount(Math.floor(Math.random() * 1000) + 5000);
-    
-    // Force video play with multiple attempts
-    const attemptPlay = () => {
-      if (videoRef.current) {
-        videoRef.current.play().then(() => {
-          setVideoPlaying(true);
-        }).catch(err => {
-          console.log("Video autoplay blocked or failed:", err);
-          setVideoPlaying(false);
-        });
-      }
-    };
-
-    attemptPlay();
-    const timer = setTimeout(attemptPlay, 1500);
-    return () => clearTimeout(timer);
   }, []);
 
   const playBruh = () => {
@@ -271,75 +253,28 @@ export default function App() {
                       <div className="w-8 h-1 rounded-full bg-white/10" />
                     </div>
 
-                    {/* Video Content */}
+                    {/* Photo Content */}
                     <div className="relative w-full h-full bg-bruh-black rounded-[2rem] overflow-hidden">
-                      <video 
-                        ref={videoRef}
+                      <img 
+                        src="https://storage.googleapis.com/static.mira.network/applet-assets/bruh_creator.jpg"
+                        alt="The Official Bruh Creator"
                         className="w-full h-full object-cover"
-                        loop 
-                        muted 
-                        playsInline
-                        webkit-playsinline="true"
-                        preload="auto"
-                        onPlay={() => setVideoPlaying(true)}
-                        onPause={() => setVideoPlaying(false)}
-                        src="https://storage.googleapis.com/static.mira.network/applet-assets/bruh_video.mp4"
-                      >
-                        <source src="https://storage.googleapis.com/static.mira.network/applet-assets/bruh_video.mp4" type="video/mp4" />
-                      </video>
+                        referrerPolicy="no-referrer"
+                      />
 
-                      {/* Play/Pause Overlay */}
-                      <AnimatePresence>
-                        {!videoPlaying && (
-                          <motion.div 
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            onClick={() => videoRef.current?.play()}
-                            className="absolute inset-0 flex flex-col items-center justify-center bg-bruh-black/60 cursor-pointer z-20"
-                          >
-                            <div className="w-20 h-20 bg-bruh-yellow rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform">
-                              <Zap className="text-bruh-black w-10 h-10 fill-current" />
-                            </div>
-                            <span className="mt-6 font-display text-2xl text-white tracking-widest">TAP TO PLAY</span>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-
-                      {/* Video UI Overlays */}
-                      <div className="absolute bottom-0 left-0 w-full p-8 bg-gradient-to-t from-bruh-black to-transparent pointer-events-none z-10">
-                        <div className="flex items-center gap-3 mb-4">
-                          <div className="w-10 h-10 rounded-full bg-bruh-yellow flex items-center justify-center font-display text-bruh-black">B</div>
+                      {/* Subtle Overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-bruh-black via-bruh-black/10 to-transparent pointer-events-none" />
+                      
+                      {/* Branding Overlay */}
+                      <div className="absolute bottom-0 left-0 w-full p-10 z-10">
+                        <div className="flex items-center gap-4 mb-3">
+                          <div className="w-12 h-12 rounded-full bg-bruh-yellow flex items-center justify-center font-display text-bruh-black shadow-[0_0_20px_rgba(250,204,21,0.3)] text-xl">B</div>
                           <div>
-                            <div className="font-display text-white text-sm">@bruh_official</div>
-                            <div className="font-mono text-[10px] text-bruh-yellow">Original Creator</div>
+                            <div className="font-display text-white text-lg tracking-tight">@bruh_official</div>
+                            <div className="font-mono text-[10px] text-bruh-yellow uppercase tracking-[0.2em]">The Official Creator</div>
                           </div>
                         </div>
-                        <p className="text-white/80 text-xs font-medium leading-relaxed">
-                          When you realize $BRUH is the only thing keeping you sane in this market... 💀 #bruh #crypto #solana
-                        </p>
-                      </div>
-
-                      {/* Interaction Buttons (TikTok style) */}
-                      <div className="absolute right-4 bottom-32 flex flex-col gap-6 z-10">
-                        <div className="flex flex-col items-center gap-1">
-                          <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center">
-                            <Flame className="text-bruh-yellow" fill="currentColor" />
-                          </div>
-                          <span className="text-[10px] text-white font-mono">1.2M</span>
-                        </div>
-                        <div className="flex flex-col items-center gap-1">
-                          <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center">
-                            <Users className="text-white" />
-                          </div>
-                          <span className="text-[10px] text-white font-mono">45K</span>
-                        </div>
-                        <div className="flex flex-col items-center gap-1">
-                          <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center">
-                            <Send className="text-white" />
-                          </div>
-                          <span className="text-[10px] text-white font-mono">Share</span>
-                        </div>
+                        <div className="h-1 w-12 bg-bruh-yellow rounded-full opacity-50" />
                       </div>
                     </div>
                   </div>
