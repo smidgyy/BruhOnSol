@@ -31,6 +31,7 @@ export default function App() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [bruhCount, setBruhCount] = useState(0);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef(null);
   
   const { scrollYProgress } = useScroll();
@@ -42,6 +43,11 @@ export default function App() {
   useEffect(() => {
     audioRef.current = new Audio(BRUH_SOUND_URL);
     setBruhCount(Math.floor(Math.random() * 1000) + 5000);
+    
+    // Force video play
+    if (videoRef.current) {
+      videoRef.current.play().catch(err => console.log("Video autoplay blocked", err));
+    }
   }, []);
 
   const playBruh = () => {
@@ -242,19 +248,27 @@ export default function App() {
                   initial={{ rotate: 10, scale: 0.9 }}
                   whileInView={{ rotate: 3, scale: 1 }}
                   viewport={{ once: true }}
-                  className="aspect-[9/16] bg-bruh-yellow rounded-[2rem] sm:rounded-[3rem] overflow-hidden relative shadow-2xl border-4 border-bruh-black"
+                  onClick={() => videoRef.current?.play()}
+                  className="aspect-[9/16] bg-bruh-yellow rounded-[2rem] sm:rounded-[3rem] overflow-hidden relative shadow-2xl border-4 border-bruh-black cursor-pointer group"
                 >
                   <video 
-                    src="https://storage.googleapis.com/static.mira.network/applet-assets/bruh_video.mp4" 
+                    ref={videoRef}
                     className="w-full h-full object-cover"
                     autoPlay 
                     loop 
                     muted 
                     playsInline
-                  />
+                    preload="auto"
+                  >
+                    <source src="https://storage.googleapis.com/static.mira.network/applet-assets/bruh_video.mp4" type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
                   <div className="absolute inset-0 flex flex-col justify-end p-6 sm:p-12 bg-gradient-to-t from-bruh-black/80 to-transparent">
                     <span className="font-display text-4xl sm:text-6xl text-white mb-2">ORIGINAL CREATOR</span>
                     <span className="font-mono text-[10px] sm:text-xs text-bruh-yellow tracking-widest uppercase">Onboard & Locked In</span>
+                  </div>
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-bruh-black/20">
+                    <Volume2 className="text-white w-12 h-12" />
                   </div>
                 </motion.div>
                 <div className="absolute -top-6 -right-6 sm:-top-10 sm:-right-10 w-28 h-28 sm:w-40 sm:h-40 bg-bruh-black rounded-2xl sm:rounded-3xl -rotate-12 flex items-center justify-center text-white p-4 sm:p-8 text-center font-display text-xl sm:text-2xl leading-tight shadow-xl z-20">
@@ -321,13 +335,20 @@ export default function App() {
             <p className="text-2xl lg:text-3xl font-medium mb-16 max-w-2xl mx-auto">
               Don't be the one saying "bruh" because you missed the pump. Be the one saying "bruh" because you're rich.
             </p>
-            <div className="flex justify-center">
+            <div className="flex flex-col sm:flex-row justify-center gap-6">
               <a 
                 href="https://x.com/i/communities/2029761924016009619" 
                 target="_blank" 
-                className="w-full sm:w-auto bg-white text-bruh-black px-8 py-4 sm:px-12 sm:py-6 rounded-2xl sm:rounded-3xl font-display text-xl sm:text-3xl flex items-center justify-center gap-4 hover:scale-105 transition-all active:scale-95"
+                className="w-full sm:w-auto bg-white text-bruh-black px-8 py-4 sm:px-12 sm:py-6 rounded-2xl sm:rounded-3xl font-display text-xl sm:text-3xl flex items-center justify-center gap-4 hover:scale-105 transition-all active:scale-95 shadow-xl"
               >
-                <Twitter size={24} className="sm:w-8 sm:h-8" /> JOIN X COMMUNITY
+                <Twitter size={24} className="sm:w-8 sm:h-8" /> JOIN X
+              </a>
+              <a 
+                href="https://pump.fun/coin/CEkNoRheGRmbcWJVQyiR86Fv7GMSriX9vM115CxRpump" 
+                target="_blank" 
+                className="w-full sm:w-auto bg-bruh-black text-white px-8 py-4 sm:px-12 sm:py-6 rounded-2xl sm:rounded-3xl font-display text-xl sm:text-3xl flex items-center justify-center gap-4 hover:scale-105 transition-all active:scale-95 shadow-xl"
+              >
+                <Flame size={24} className="sm:w-8 sm:h-8 text-bruh-yellow" /> BUY ON PUMPFUN
               </a>
             </div>
           </div>
@@ -352,15 +373,13 @@ export default function App() {
                   <h4 className="font-mono text-[10px] text-white/40 uppercase tracking-widest">Socials</h4>
                   <ul className="space-y-2 font-mono text-[10px] uppercase tracking-widest">
                     <li><a href="https://x.com/i/communities/2029761924016009619" target="_blank" className="hover:text-bruh-yellow transition-colors">X Community</a></li>
-                    <li><a href="#" className="hover:text-bruh-yellow transition-colors">Discord</a></li>
                   </ul>
                 </div>
                 <div className="space-y-4">
                   <h4 className="font-mono text-[10px] text-white/40 uppercase tracking-widest">Links</h4>
                   <ul className="space-y-2 font-mono text-[10px] uppercase tracking-widest">
-                    <li><a href="#" className="hover:text-bruh-yellow transition-colors">DexTools</a></li>
-                    <li><a href="#" className="hover:text-bruh-yellow transition-colors">DexScreener</a></li>
-                    <li><a href="#" className="hover:text-bruh-yellow transition-colors">Solscan</a></li>
+                    <li><a href="https://dexscreener.com/solana/6fkyvorajbkw1xyqjcssqe7wr7wxhmwuvonvzzpptmxc" target="_blank" className="hover:text-bruh-yellow transition-colors">DexScreener</a></li>
+                    <li><a href="https://pump.fun/coin/CEkNoRheGRmbcWJVQyiR86Fv7GMSriX9vM115CxRpump" target="_blank" className="hover:text-bruh-yellow transition-colors">Pump.fun</a></li>
                   </ul>
                 </div>
               </div>
