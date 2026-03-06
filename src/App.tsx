@@ -117,7 +117,7 @@ export default function App() {
               <div className="inline-block mb-6 px-4 py-1 glass rounded-full">
                 <span className="font-mono text-[10px] text-bruh-yellow uppercase tracking-[0.3em]">The Original Bruh Moment</span>
               </div>
-              <h1 className="font-display text-[22vw] sm:text-[18vw] lg:text-[18rem] leading-[0.75] tracking-tighter italic text-stroke-white text-transparent mb-8 relative">
+              <h1 className="font-display text-[25vw] sm:text-[18vw] lg:text-[18rem] leading-[0.75] tracking-tighter italic text-stroke-white text-transparent mb-8 relative">
                 BRUH<span className="text-bruh-yellow text-stroke-0">.</span>
                 
                 <AnimatePresence>
@@ -157,13 +157,13 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="w-full max-w-2xl glass p-2 rounded-full flex items-center gap-4 group">
-                <div className="pl-6 font-mono text-[10px] md:text-xs text-white/40 uppercase tracking-wider truncate flex-1">
+              <div className="w-full max-w-2xl glass p-1.5 sm:p-2 rounded-2xl sm:rounded-full flex flex-col sm:flex-row items-center gap-2 sm:gap-4 group">
+                <div className="w-full sm:w-auto pl-4 sm:pl-6 font-mono text-[9px] md:text-xs text-white/40 uppercase tracking-wider truncate flex-1 text-center sm:text-left py-2 sm:py-0">
                   {CA}
                 </div>
                 <button 
                   onClick={copyToClipboard}
-                  className="bg-white text-bruh-black h-12 px-8 rounded-full font-bold text-xs transition-all hover:bg-bruh-yellow active:scale-95 flex items-center gap-2"
+                  className="w-full sm:w-auto bg-white text-bruh-black h-10 sm:h-12 px-6 sm:px-8 rounded-xl sm:rounded-full font-bold text-[10px] sm:text-xs transition-all hover:bg-bruh-yellow active:scale-95 flex items-center justify-center gap-2"
                 >
                   {copied ? <Check size={14} /> : <Copy size={14} />}
                   {copied ? "COPIED" : "COPY CA"}
@@ -210,7 +210,7 @@ export default function App() {
         {/* The Vibe Section */}
         <section id="vibe" className="py-40 bg-white text-bruh-black relative overflow-hidden">
           <div className="max-w-[1400px] mx-auto px-6">
-            <div className="grid lg:grid-cols-2 gap-32 items-center">
+            <div className="grid lg:grid-cols-2 gap-16 lg:gap-32 items-center">
               <motion.div
                 initial={{ opacity: 0, x: -50 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -219,10 +219,10 @@ export default function App() {
                 <div className="inline-block mb-8 px-4 py-1 border border-bruh-black/10 rounded-full">
                   <span className="font-mono text-[10px] text-bruh-black/60 uppercase tracking-[0.3em]">The Philosophy</span>
                 </div>
-                <h2 className="font-display text-8xl lg:text-[10rem] leading-[0.85] tracking-tighter mb-12">
+                <h2 className="font-display text-6xl sm:text-8xl lg:text-[10rem] leading-[0.85] tracking-tighter mb-12">
                   IT'S NOT A COIN.<br />IT'S A <span className="text-stroke-yellow text-white">SIGH.</span>
                 </h2>
-                <p className="text-2xl lg:text-3xl leading-tight font-medium mb-10 text-bruh-black/80">
+                <p className="text-xl sm:text-2xl lg:text-3xl leading-tight font-medium mb-10 text-bruh-black/80">
                   We've all been there. The rug. The top. The missed 1000x. $BRUH is the first token that actually understands your pain.
                 </p>
                 <div className="flex flex-wrap gap-4">
@@ -237,25 +237,27 @@ export default function App() {
                 </div>
               </motion.div>
 
-              <div className="relative">
+              <div className="relative w-full max-w-md mx-auto lg:max-w-none">
                 <motion.div 
                   initial={{ rotate: 10, scale: 0.9 }}
                   whileInView={{ rotate: 3, scale: 1 }}
                   viewport={{ once: true }}
-                  className="aspect-[4/5] bg-bruh-yellow rounded-[3rem] overflow-hidden relative shadow-2xl"
+                  className="aspect-[9/16] bg-bruh-yellow rounded-[2rem] sm:rounded-[3rem] overflow-hidden relative shadow-2xl border-4 border-bruh-black"
                 >
-                  <img 
-                    src="https://picsum.photos/seed/bruh-vibe/1000/1200" 
-                    alt="Bruh Vibe" 
-                    className="w-full h-full object-cover grayscale mix-blend-multiply opacity-80"
-                    referrerPolicy="no-referrer"
+                  <video 
+                    src="https://storage.googleapis.com/static.mira.network/applet-assets/bruh_video.mp4" 
+                    className="w-full h-full object-cover"
+                    autoPlay 
+                    loop 
+                    muted 
+                    playsInline
                   />
-                  <div className="absolute inset-0 flex flex-col justify-end p-12 bg-gradient-to-t from-bruh-black/80 to-transparent">
-                    <span className="font-display text-6xl text-white mb-2">ORIGINAL CREATOR</span>
-                    <span className="font-mono text-xs text-bruh-yellow tracking-widest uppercase">Onboard & Locked In</span>
+                  <div className="absolute inset-0 flex flex-col justify-end p-6 sm:p-12 bg-gradient-to-t from-bruh-black/80 to-transparent">
+                    <span className="font-display text-4xl sm:text-6xl text-white mb-2">ORIGINAL CREATOR</span>
+                    <span className="font-mono text-[10px] sm:text-xs text-bruh-yellow tracking-widest uppercase">Onboard & Locked In</span>
                   </div>
                 </motion.div>
-                <div className="absolute -top-10 -right-10 w-40 h-40 bg-bruh-black rounded-3xl -rotate-12 flex items-center justify-center text-white p-8 text-center font-display text-2xl leading-tight shadow-xl">
+                <div className="absolute -top-6 -right-6 sm:-top-10 sm:-right-10 w-28 h-28 sm:w-40 sm:h-40 bg-bruh-black rounded-2xl sm:rounded-3xl -rotate-12 flex items-center justify-center text-white p-4 sm:p-8 text-center font-display text-xl sm:text-2xl leading-tight shadow-xl z-20">
                   100% REAL BRUH
                 </div>
               </div>
@@ -313,15 +315,19 @@ export default function App() {
           </div>
           
           <div className="max-w-5xl mx-auto px-6 text-center relative z-10">
-            <h2 className="font-display text-8xl lg:text-[12rem] leading-[0.8] tracking-tighter mb-12">
+            <h2 className="font-display text-6xl sm:text-8xl lg:text-[12rem] leading-[0.8] tracking-tighter mb-12">
               JOIN THE <br />BRUH-HOOD
             </h2>
             <p className="text-2xl lg:text-3xl font-medium mb-16 max-w-2xl mx-auto">
               Don't be the one saying "bruh" because you missed the pump. Be the one saying "bruh" because you're rich.
             </p>
             <div className="flex justify-center">
-              <a href="https://x.com/i/communities/2029761924016009619" target="_blank" className="bg-white text-bruh-black px-12 py-6 rounded-3xl font-display text-3xl flex items-center justify-center gap-4 hover:scale-105 transition-all active:scale-95">
-                <Twitter size={24} /> JOIN X COMMUNITY
+              <a 
+                href="https://x.com/i/communities/2029761924016009619" 
+                target="_blank" 
+                className="w-full sm:w-auto bg-white text-bruh-black px-8 py-4 sm:px-12 sm:py-6 rounded-2xl sm:rounded-3xl font-display text-xl sm:text-3xl flex items-center justify-center gap-4 hover:scale-105 transition-all active:scale-95"
+              >
+                <Twitter size={24} className="sm:w-8 sm:h-8" /> JOIN X COMMUNITY
               </a>
             </div>
           </div>
