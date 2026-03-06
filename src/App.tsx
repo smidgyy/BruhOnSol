@@ -30,6 +30,7 @@ export default function App() {
   const [copied, setCopied] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [bruhCount, setBruhCount] = useState(0);
+  const [videoPlaying, setVideoPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef(null);
@@ -44,10 +45,21 @@ export default function App() {
     audioRef.current = new Audio(BRUH_SOUND_URL);
     setBruhCount(Math.floor(Math.random() * 1000) + 5000);
     
-    // Force video play
-    if (videoRef.current) {
-      videoRef.current.play().catch(err => console.log("Video autoplay blocked", err));
-    }
+    // Force video play with multiple attempts
+    const attemptPlay = () => {
+      if (videoRef.current) {
+        videoRef.current.play().then(() => {
+          setVideoPlaying(true);
+        }).catch(err => {
+          console.log("Video autoplay blocked or failed:", err);
+          setVideoPlaying(false);
+        });
+      }
+    };
+
+    attemptPlay();
+    const timer = setTimeout(attemptPlay, 1500);
+    return () => clearTimeout(timer);
   }, []);
 
   const playBruh = () => {
@@ -243,37 +255,100 @@ export default function App() {
                 </div>
               </motion.div>
 
-              <div className="relative w-full max-w-md mx-auto lg:max-w-none">
+              <div className="relative w-full flex justify-center lg:justify-end">
+                {/* Realistic Phone Mockup */}
                 <motion.div 
-                  initial={{ rotate: 10, scale: 0.9 }}
-                  whileInView={{ rotate: 3, scale: 1 }}
+                  initial={{ y: 50, opacity: 0 }}
+                  whileInView={{ y: 0, opacity: 1 }}
                   viewport={{ once: true }}
-                  onClick={() => videoRef.current?.play()}
-                  className="aspect-[9/16] bg-bruh-yellow rounded-[2rem] sm:rounded-[3rem] overflow-hidden relative shadow-2xl border-4 border-bruh-black cursor-pointer group"
+                  className="relative mx-auto lg:mx-0"
                 >
-                  <video 
-                    ref={videoRef}
-                    className="w-full h-full object-cover"
-                    autoPlay 
-                    loop 
-                    muted 
-                    playsInline
-                    preload="auto"
-                  >
-                    <source src="https://storage.googleapis.com/static.mira.network/applet-assets/bruh_video.mp4" type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
-                  <div className="absolute inset-0 flex flex-col justify-end p-6 sm:p-12 bg-gradient-to-t from-bruh-black/80 to-transparent">
-                    <span className="font-display text-4xl sm:text-6xl text-white mb-2">ORIGINAL CREATOR</span>
-                    <span className="font-mono text-[10px] sm:text-xs text-bruh-yellow tracking-widest uppercase">Onboard & Locked In</span>
+                  {/* Phone Frame */}
+                  <div className="relative border-bruh-black bg-bruh-black border-[12px] rounded-[3rem] h-[650px] w-[320px] shadow-2xl overflow-hidden">
+                    {/* Notch */}
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-7 bg-bruh-black rounded-b-2xl z-30 flex items-center justify-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-white/10" />
+                      <div className="w-8 h-1 rounded-full bg-white/10" />
+                    </div>
+
+                    {/* Video Content */}
+                    <div className="relative w-full h-full bg-bruh-black rounded-[2rem] overflow-hidden">
+                      <video 
+                        ref={videoRef}
+                        className="w-full h-full object-cover"
+                        loop 
+                        muted 
+                        playsInline
+                        webkit-playsinline="true"
+                        preload="auto"
+                        onPlay={() => setVideoPlaying(true)}
+                        onPause={() => setVideoPlaying(false)}
+                        src="https://storage.googleapis.com/static.mira.network/applet-assets/bruh_video.mp4"
+                      >
+                        <source src="https://storage.googleapis.com/static.mira.network/applet-assets/bruh_video.mp4" type="video/mp4" />
+                      </video>
+
+                      {/* Play/Pause Overlay */}
+                      <AnimatePresence>
+                        {!videoPlaying && (
+                          <motion.div 
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => videoRef.current?.play()}
+                            className="absolute inset-0 flex flex-col items-center justify-center bg-bruh-black/60 cursor-pointer z-20"
+                          >
+                            <div className="w-20 h-20 bg-bruh-yellow rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform">
+                              <Zap className="text-bruh-black w-10 h-10 fill-current" />
+                            </div>
+                            <span className="mt-6 font-display text-2xl text-white tracking-widest">TAP TO PLAY</span>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+
+                      {/* Video UI Overlays */}
+                      <div className="absolute bottom-0 left-0 w-full p-8 bg-gradient-to-t from-bruh-black to-transparent pointer-events-none z-10">
+                        <div className="flex items-center gap-3 mb-4">
+                          <div className="w-10 h-10 rounded-full bg-bruh-yellow flex items-center justify-center font-display text-bruh-black">B</div>
+                          <div>
+                            <div className="font-display text-white text-sm">@bruh_official</div>
+                            <div className="font-mono text-[10px] text-bruh-yellow">Original Creator</div>
+                          </div>
+                        </div>
+                        <p className="text-white/80 text-xs font-medium leading-relaxed">
+                          When you realize $BRUH is the only thing keeping you sane in this market... 💀 #bruh #crypto #solana
+                        </p>
+                      </div>
+
+                      {/* Interaction Buttons (TikTok style) */}
+                      <div className="absolute right-4 bottom-32 flex flex-col gap-6 z-10">
+                        <div className="flex flex-col items-center gap-1">
+                          <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center">
+                            <Flame className="text-bruh-yellow" fill="currentColor" />
+                          </div>
+                          <span className="text-[10px] text-white font-mono">1.2M</span>
+                        </div>
+                        <div className="flex flex-col items-center gap-1">
+                          <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center">
+                            <Users className="text-white" />
+                          </div>
+                          <span className="text-[10px] text-white font-mono">45K</span>
+                        </div>
+                        <div className="flex flex-col items-center gap-1">
+                          <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center">
+                            <Send className="text-white" />
+                          </div>
+                          <span className="text-[10px] text-white font-mono">Share</span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-bruh-black/20">
-                    <Volume2 className="text-white w-12 h-12" />
+
+                  {/* Floating Badge */}
+                  <div className="absolute -top-10 -right-10 w-40 h-40 bg-bruh-yellow rounded-full flex items-center justify-center text-bruh-black p-8 text-center font-display text-2xl leading-tight shadow-2xl rotate-12 z-40 border-4 border-bruh-black">
+                    WATCH THE VIBE
                   </div>
                 </motion.div>
-                <div className="absolute -top-6 -right-6 sm:-top-10 sm:-right-10 w-28 h-28 sm:w-40 sm:h-40 bg-bruh-black rounded-2xl sm:rounded-3xl -rotate-12 flex items-center justify-center text-white p-4 sm:p-8 text-center font-display text-xl sm:text-2xl leading-tight shadow-xl z-20">
-                  100% REAL BRUH
-                </div>
               </div>
             </div>
           </div>
