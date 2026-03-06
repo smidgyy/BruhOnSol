@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { motion, useScroll, useTransform, AnimatePresence, useSpring } from "motion/react";
+import { motion, useScroll, useTransform, AnimatePresence, useSpring } from "framer-motion";
 import { 
   Twitter, 
   Send, 
@@ -26,6 +26,7 @@ const CA = "CEkNoRheGRmbcWJVQyiR86Fv7GMSriX9vM115CxRpump";
 const BRUH_SOUND_URL = "https://www.myinstants.com/media/sounds/bruh.mp3";
 
 export default function App() {
+  console.log("App: Rendering component");
   const [copied, setCopied] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [bruhCount, setBruhCount] = useState(0);
